@@ -69,4 +69,29 @@ public class User extends BaseEntity {
   @Builder.Default
   @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<MwohaeRequest> receivedRequests = new ArrayList<>();
+
+  public void addSentHelloPost(HelloPost helloPost) {
+    sentHelloPosts.add(helloPost);
+    helloPost.setSender(this);
+  }
+
+  public void addReceivedHelloPost(HelloPost helloPost) {
+    receivedHelloPosts.add(helloPost);
+    helloPost.setReceiver(this);
+  }
+
+  public void addComment(Comment comment) {
+    comments.add(comment);
+    comment.setUser(this);
+  }
+
+  public void addSentRequest(MwohaeRequest request) {
+    sentRequests.add(request);
+    request.setSender(this);
+  }
+
+  public void addReceivedRequest(MwohaeRequest request) {
+    receivedRequests.add(request);
+    request.setReceiver(this);
+  }
 }

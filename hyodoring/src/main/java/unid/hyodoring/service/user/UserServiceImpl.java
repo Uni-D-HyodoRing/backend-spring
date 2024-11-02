@@ -44,7 +44,8 @@ public class UserServiceImpl implements UserService {
             .loginPw(registerDTO.getLoginPw())
             .role(Role.valueOf(registerDTO.getMyRole()))
             .build();
-        return userRepository.save(user);
+
+      return userRepository.save(user);
 
     }
 }

@@ -6,13 +6,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import unid.hyodoring.api.code.status.ErrorStatus;
 import unid.hyodoring.api.exception.GeneralException;
+import unid.hyodoring.domain.Family;
 import unid.hyodoring.domain.HelloPost;
 import unid.hyodoring.domain.HelloPostImage;
 import unid.hyodoring.domain.User;
-import unid.hyodoring.repository.HelloPostImageRepository;
-import unid.hyodoring.repository.HelloPostRepository;
-import unid.hyodoring.repository.UserRepository;
+import unid.hyodoring.repository.*;
 import unid.hyodoring.web.dto.HelloReqDTO;
+import unid.hyodoring.web.dto.HelloResDTO;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -29,6 +29,7 @@ public class HelloServiceImpl implements HelloService {
     private final UserRepository userRepository;
     private final HelloPostRepository helloPostRepository;
     private final HelloPostImageRepository helloPostImageRepository;
+    private final CommentRepository commentRepository;
 
     @Override
     public String saveImage(MultipartFile image) {
@@ -72,21 +73,59 @@ public class HelloServiceImpl implements HelloService {
         User receiver = userRepository.findById(helloDTO.getReceiverId())
                 .orElseThrow(() -> new GeneralException(ErrorStatus._NOT_FOUND));
 
-        HelloPost helloPost = HelloPost.builder()
+        HelloPost helloPost = helloPostRepository.save(HelloPost.builder()
                 .description(helloDTO.getText())
                 .sender(sender)
                 .receiver(receiver)
-                .build();
+                .build());
 
-        helloPostRepository.save(helloPost);
+        helloPost.setSender(sender);
+        helloPost.setReceiver(receiver);
+        helloPost.setFamily(sender.getFamily());
+
+        HelloPost savedHelloPost = helloPostRepository.save(helloPost);
 
         images.forEach(image -> {
                     HelloPostImage helloPostImage = HelloPostImage.builder()
                             .imageName(image)
-                            .helloPost(helloPost)
+                            .helloPost(savedHelloPost)
                             .build();
-                    helloPostImageRepository.save(helloPostImage);
+                    helloPostImage = helloPostImageRepository.save(helloPostImage);
+                    helloPostImage.setHelloPost(savedHelloPost);
+                    savedHelloPost.addHelloPostImage(helloPostImage);
                 });
 
+    }
+
+    @Override
+    public HelloResDTO.HelloDetailDTO getHelloDetail(Long helloId) {
+
+        HelloPost helloPost = helloPostRepository.findById(helloId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus._NOT_FOUND));
+
+        List<String> images = helloPostImageRepository.findAllByHelloPost(helloPost).stream()
+                .map(HelloPostImage::getImageName)
+                .toList();
+
+        return HelloResDTO.HelloDetailDTO.toDTO(helloPost, images);
+    }
+
+    @Override
+    public List<HelloResDTO.HelloFullInfoDTO> getHelloList(Long userId) {
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus._NOT_FOUND));
+
+        Family family = user.getFamily();
+
+        return helloPostRepository.findAllByFamily(family).stream()
+                .map(helloPost -> {
+                    List<String> images = helloPostImageRepository.findAllByHelloPost(helloPost).stream()
+                            .map(HelloPostImage::getImageName)
+                            .toList();
+                    Long count = commentRepository.countByHelloPost(helloPost);
+                    return HelloResDTO.HelloFullInfoDTO.toDTO(helloPost, images, count);
+                })
+                .toList();
     }
 }

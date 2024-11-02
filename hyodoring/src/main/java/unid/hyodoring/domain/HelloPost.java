@@ -34,11 +34,28 @@ public class HelloPost extends BaseEntity {
     @OneToMany(mappedBy = "helloPost", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
+    @Setter
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "family_id")
+    private Family family;
+
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sender_id", nullable = false)
     private User sender;
 
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "receiver_id", nullable = false)
     private User receiver;
+
+    public void addHelloPostImage(HelloPostImage helloPostImage) {
+        helloPostImages.add(helloPostImage);
+        helloPostImage.setHelloPost(this);
+    }
+
+    public void addComment(Comment comment) {
+        comments.add(comment);
+        comment.setHelloPost(this);
+    }
 }

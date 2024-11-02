@@ -23,6 +23,7 @@ public class HelloPostImage extends BaseEntity {
     @Column
     private String imageName;
 
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hello_post_id", nullable = false)
     private HelloPost helloPost;
