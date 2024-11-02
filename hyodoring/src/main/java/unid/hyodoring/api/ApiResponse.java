@@ -15,7 +15,7 @@ import unid.hyodoring.api.code.status.SuccessStatus;
 public class ApiResponse<T>  {
 
     @JsonProperty("isSuccess")
-    private final boolean isSuccess; // 성공 여부
+    private boolean isSuccess; // 성공 여부
     private final String code; // 응답 코드
     private final String message; // 응답 메시지
 
@@ -28,24 +28,30 @@ public class ApiResponse<T>  {
         return isSuccess;
     }
 
-    // 성공한 경우 응답 생성
-    public static <T> ApiResponse<T> onSuccess(SuccessStatus code, T result) {
-        return new ApiResponse<>(true, code.getCode(), code.getMessage(), result);
-
+    public static <T> ApiResponse<T> onSuccess(SuccessStatus status, T result) {
+        return new ApiResponse<>(status, result);
     }
 
-    public static <T> ApiResponse<T> of(BaseCode code, T result) {
-        return new ApiResponse<>(true, code.getReasonHttpStatus().getCode(), code.getReasonHttpStatus().getMessage(), result);
-    }
-
-    // 성공한 경우 응답 생성 (Void 타입 지원)
-    public static ApiResponse<Void> onSuccess(SuccessStatus code) {
-        return new ApiResponse<>(true, code.getCode(), code.getMessage(), null);
+    public static ApiResponse<Void> onSuccess(SuccessStatus status) {
+        return new ApiResponse<>(status);
     }
 
     // 실패한 경우 응답 생성
     public static <T> ApiResponse<T> onFailure(String code, String message, T data) {
         return new ApiResponse<>(false, code, message, data);
+    }
+
+    public ApiResponse(SuccessStatus status, T result) {
+        this.isSuccess = true;
+        this.code = status.getCode();
+        this.message = status.getMessage();
+        this.result = result;
+    }
+
+    public ApiResponse(SuccessStatus status) {
+        this.isSuccess = true;
+        this.code = status.getCode();
+        this.message = status.getMessage();
     }
 
     public ApiResponse(ErrorStatus status) {
