@@ -18,7 +18,9 @@ import unid.hyodoring.repository.FamilyRepository;
 import unid.hyodoring.repository.UserRepository;
 import unid.hyodoring.service.user.UserService;
 import unid.hyodoring.util.RandomStringGenerator;
+import unid.hyodoring.web.dto.GroupJoinResponseDto;
 import unid.hyodoring.web.dto.GroupMakeResponseDto;
+import unid.hyodoring.web.dto.GroupRequestDto.JoinDTO;
 import unid.hyodoring.web.dto.GroupRequestDto.MakeDTO;
 import unid.hyodoring.web.dto.LoginResponseDTO;
 import unid.hyodoring.web.dto.MemberReqDTO.LoginDTO;
@@ -77,5 +79,22 @@ public class UserController {
     groupMakeResponseDto.setJoin_code(newFamily.getJoinCode());
 
     return ApiResponse.onSuccess(SuccessStatus._OK, groupMakeResponseDto);
+  }
+
+  @PostMapping("/joingroup")
+  ApiResponse<GroupJoinResponseDto> joinGroup(@RequestBody JoinDTO joinDTO) {
+    User user = userRepository.findById(joinDTO.getUser_id())
+        .orElseThrow(() -> new GeneralException(
+            ErrorStatus._BAD_REQUEST));
+
+    Family family = familyRepository.findByJoinCode(joinDTO.getJoin_code())
+        .orElseThrow(() -> new GeneralException(ErrorStatus._BAD_REQUEST));
+
+    user.setFamily(family);
+
+    GroupJoinResponseDto groupJoinResponseDto = new GroupJoinResponseDto();
+    groupJoinResponseDto.setGroup_id(family.getId());
+
+    return ApiResponse.onSuccess(SuccessStatus._OK, groupJoinResponseDto);
   }
 }

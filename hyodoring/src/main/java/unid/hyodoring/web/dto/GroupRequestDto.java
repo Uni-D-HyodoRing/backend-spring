@@ -18,7 +18,7 @@ public class GroupRequestDto {
 
   @Getter
   @RequiredArgsConstructor
-  public static class joinDTO{
+  public static class JoinDTO{
     private final Long user_id;
     private final String join_code;
     private final Role my_role;
