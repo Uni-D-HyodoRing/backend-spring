@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import unid.hyodoring.api.ApiResponse;
 import unid.hyodoring.api.code.status.SuccessStatus;
-import unid.hyodoring.service.member.UserService;
+import unid.hyodoring.service.user.UserService;
 import unid.hyodoring.web.dto.MemberReqDTO;
 
 @RestController

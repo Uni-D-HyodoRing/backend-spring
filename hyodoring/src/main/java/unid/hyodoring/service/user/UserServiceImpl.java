@@ -1,4 +1,4 @@
-package unid.hyodoring.service.member;
+package unid.hyodoring.service.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
