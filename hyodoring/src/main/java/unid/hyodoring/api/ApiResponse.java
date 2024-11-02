@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import unid.hyodoring.api.code.BaseCode;
 import unid.hyodoring.api.code.status.ErrorStatus;
 import unid.hyodoring.api.code.status.SuccessStatus;
 

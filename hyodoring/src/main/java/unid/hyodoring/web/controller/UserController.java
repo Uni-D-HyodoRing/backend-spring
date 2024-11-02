@@ -16,8 +16,8 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/login")
-    ApiResponse<Void> login(@RequestBody MemberReqDTO.LoginDTO loginDTO) {
+    ApiResponse<String> login(@RequestBody MemberReqDTO.LoginDTO loginDTO) {
         userService.login(loginDTO);
-        return ApiResponse.onSuccess(SuccessStatus._OK);
+        return ApiResponse.onSuccess(SuccessStatus._OK, "");
     }
 }
