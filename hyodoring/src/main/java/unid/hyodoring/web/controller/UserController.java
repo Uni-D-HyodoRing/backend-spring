@@ -58,7 +58,7 @@ public class UserController {
             ErrorStatus._BAD_REQUEST));
 
     Family family = user.getFamily();
-    if (family == null) {
+    if (family != null) {
       throw new GeneralException(ErrorStatus._BAD_REQUEST);
     }
     String joinCode = "12345";
@@ -68,13 +68,13 @@ public class UserController {
       existJoinCode = familyRepository.existsByJoinCode(joinCode);
     }
 
-    Family family = Family.builder().joinCode(joinCode).build();
-    familyRepository.save(family);
-    user.setFamily(family);
+    Family newFamily = Family.builder().joinCode(joinCode).build();
+    familyRepository.save(newFamily);
+    user.setFamily(newFamily);
 
     GroupMakeResponseDto groupMakeResponseDto = new GroupMakeResponseDto();
-    groupMakeResponseDto.setGroup_id(family.getId());
-    groupMakeResponseDto.setJoin_code(family.getJoinCode());
+    groupMakeResponseDto.setGroup_id(newFamily.getId());
+    groupMakeResponseDto.setJoin_code(newFamily.getJoinCode());
 
     return ApiResponse.onSuccess(SuccessStatus._OK, groupMakeResponseDto);
   }
