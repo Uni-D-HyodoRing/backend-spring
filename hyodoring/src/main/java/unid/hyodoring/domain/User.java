@@ -46,6 +46,7 @@ public class User extends BaseEntity {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "family_id", nullable = true, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+  @Setter
   private Family family;
 
   @Builder.Default
