@@ -1,8 +1,11 @@
 package unid.hyodoring.service.user;
 
+import unid.hyodoring.domain.User;
 import unid.hyodoring.web.dto.MemberReqDTO;
 
 public interface UserService {
 
-    void login(MemberReqDTO.LoginDTO loginDTO);
+    User login(MemberReqDTO.LoginDTO loginDTO);
+
+    User register(MemberReqDTO.registerDTO registerDTO);
 }
