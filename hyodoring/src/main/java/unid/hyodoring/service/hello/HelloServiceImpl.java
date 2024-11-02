@@ -1,7 +1,6 @@
-package unid.hyodoring.service.user;
+package unid.hyodoring.service.hello;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,9 +26,6 @@ import java.util.UUID;
 @Transactional
 public class HelloServiceImpl implements HelloService {
 
-    @Value("${image.path}")
-    private String UPLOAD_DIR;
-
     private final UserRepository userRepository;
     private final HelloPostRepository helloPostRepository;
     private final HelloPostImageRepository helloPostImageRepository;
@@ -41,6 +37,7 @@ public class HelloServiceImpl implements HelloService {
             throw new GeneralException(ErrorStatus._BAD_REQUEST);
         }
         try {
+            String UPLOAD_DIR = "src/main/resources/static";
             Path uploadPath = Path.of(UPLOAD_DIR);
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);

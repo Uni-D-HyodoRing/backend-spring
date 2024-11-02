@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import unid.hyodoring.api.ApiResponse;
 import unid.hyodoring.api.code.status.SuccessStatus;
-import unid.hyodoring.service.user.HelloService;
+import unid.hyodoring.service.hello.HelloService;
 import unid.hyodoring.web.dto.HelloReqDTO;
 
 import java.util.List;

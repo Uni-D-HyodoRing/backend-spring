@@ -1,4 +1,4 @@
-package unid.hyodoring.service.user;
+package unid.hyodoring.service.hello;
 
 import org.springframework.web.multipart.MultipartFile;
 import unid.hyodoring.web.dto.HelloReqDTO;
