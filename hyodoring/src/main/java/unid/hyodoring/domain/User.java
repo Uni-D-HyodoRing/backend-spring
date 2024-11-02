@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import unid.hyodoring.domain.common.BaseEntity;
+import unid.hyodoring.domain.enums.Role;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -35,6 +36,13 @@ public class User extends BaseEntity {
 
     @Column
     private LocalDate birth;
+
+    @Enumerated(EnumType.STRING)
+    @Column
+    private Role role;
+
+    @Column
+    private Integer hyodoPower;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "family_id", nullable = false)
