@@ -6,4 +6,5 @@ import unid.hyodoring.domain.MwohaeRequest;
 
 @Repository
 public interface MwohaeRequestRepository extends JpaRepository<MwohaeRequest, Long> {
+
 }
