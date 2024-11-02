@@ -71,8 +71,9 @@ public class UserController {
     }
 
     Family newFamily = Family.builder().joinCode(joinCode).build();
-    familyRepository.save(newFamily);
+    newFamily = familyRepository.save(newFamily);
     user.setFamily(newFamily);
+    newFamily.addUser(user);
 
     GroupMakeResponseDto groupMakeResponseDto = new GroupMakeResponseDto();
     groupMakeResponseDto.setGroup_id(newFamily.getId());
@@ -91,6 +92,7 @@ public class UserController {
         .orElseThrow(() -> new GeneralException(ErrorStatus._BAD_REQUEST));
 
     user.setFamily(family);
+    family.addUser(user);
 
     GroupJoinResponseDto groupJoinResponseDto = new GroupJoinResponseDto();
     groupJoinResponseDto.setGroup_id(family.getId());

@@ -29,4 +29,18 @@ public class Family extends BaseEntity {
     @Builder.Default
     @OneToMany(mappedBy = "family", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<User> users = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "family", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<HelloPost> helloPosts = new ArrayList<>();
+
+    public void addUser(User user) {
+        users.add(user);
+        user.setFamily(this);
+    }
+
+    public void addHelloPost(HelloPost helloPost) {
+        helloPosts.add(helloPost);
+        helloPost.setFamily(this);
+    }
 }

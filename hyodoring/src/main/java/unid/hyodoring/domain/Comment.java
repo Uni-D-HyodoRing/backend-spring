@@ -23,10 +23,12 @@ public class Comment extends BaseEntity {
     @Column
     private String content;
 
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hello_post_id", nullable = false)
     private HelloPost helloPost;
 
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
