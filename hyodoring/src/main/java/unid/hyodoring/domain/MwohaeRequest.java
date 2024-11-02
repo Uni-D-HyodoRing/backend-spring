@@ -20,6 +20,10 @@ public class MwohaeRequest extends BaseEntity {
     @Column(nullable = false, unique = true)
     private Long id;
 
+    @Column
+    @Setter
+    private Boolean isComplete;
+
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sender_id", nullable = false)
