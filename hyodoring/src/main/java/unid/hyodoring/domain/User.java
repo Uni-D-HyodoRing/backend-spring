@@ -42,6 +42,7 @@ public class User extends BaseEntity {
   private Role role;
 
   @Column
+  @Setter
   private Integer hyodoPower;
 
   @ManyToOne(fetch = FetchType.LAZY)
