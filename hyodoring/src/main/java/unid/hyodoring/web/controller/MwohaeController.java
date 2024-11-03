@@ -13,6 +13,7 @@ import unid.hyodoring.domain.MwohaeRequest;
 import unid.hyodoring.domain.User;
 import unid.hyodoring.repository.MwohaeRequestRepository;
 import unid.hyodoring.repository.UserRepository;
+import unid.hyodoring.service.fcm.FCMService;
 import unid.hyodoring.web.dto.MwoHaeDto;
 import unid.hyodoring.web.dto.SurveyRequestDTO;
 
@@ -23,6 +24,7 @@ public class MwohaeController {
 
   private final MwohaeRequestRepository mwohaeRequestRepository;
   private final UserRepository userRepository;
+  private final FCMService fcmService;
 
   @PostMapping("/mwohae")
   ApiResponse<Void> submit(@RequestBody MwoHaeDto.requestDto requestDto) {
@@ -39,6 +41,9 @@ public class MwohaeController {
         isComplete(false)
         .build()
     );
+
+    fcmService.sendMessage(receiverUser.getId(), "뭐해 요청이 도착했습니다.",
+        senderUser.getName() + "님이 " + receiverUser.getName() + " 님의 안부를 궁금해해요!");
 
     return ApiResponse.onSuccess(SuccessStatus._OK);
   }
